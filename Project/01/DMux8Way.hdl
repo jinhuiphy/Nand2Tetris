@@ -1,0 +1,64 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/DMux8Way.hdl
+
+/**
+ * 8-way demultiplexor:
+ * {a, b, c, d, e, f, g, h} = {in, 0, 0, 0, 0, 0, 0, 0} if sel == 000
+ *                            {0, in, 0, 0, 0, 0, 0, 0} if sel == 001
+ *                            etc.
+ *                            {0, 0, 0, 0, 0, 0, 0, in} if sel == 111
+ */
+
+CHIP DMux8Way {
+    IN in, sel[3];
+    OUT a, b, c, d, e, f, g, h;
+
+    PARTS:
+    // Put your code here:
+    Not(in=sel[0], out=sel0inv);
+    Not(in=sel[1], out=sel1inv);
+    Not(in=sel[2], out=sel2inv);
+
+    //And(a=in, b=sel0inv, out=a1);
+    //And(a=a1, b=sel1inv, out=a2);
+    //And(a=a2, b=sel2inv, out=a); 
+    And4Way(a=in, b=sel0inv, c=sel1inv, d=sel2inv, out=a);	//000
+
+    //And(a=in, b=sel[0], out=b1);
+    //And(a=b1, b=sel1inv, out=b2);
+    //And(a=b2, b=sel2inv, out=b); 
+    And4Way(a=in, b=sel[0], c=sel1inv, d=sel2inv, out=b);	//001
+
+    //And(a=in, b=sel0inv, out=c1);
+    //And(a=c1, b=sel[1], out=c2);
+    //And(a=c2, b=sel2inv, out=c); 
+    And4Way(a=in, b=sel0inv, c=sel[1], d=sel2inv, out=c);	//010
+
+    //And(a=in, b=sel[0], out=d1);
+    //And(a=d1, b=sel[1], out=d2);
+    //And(a=d2, b=sel2inv, out=d); 
+    And4Way(a=in, b=sel[0], c=sel[1], d=sel2inv, out=d);	//011
+
+    //And(a=in, b=sel0inv, out=e1);
+    //And(a=e1, b=sel1inv, out=e2);
+    //And(a=e2, b=sel[2], out=e); 
+    And4Way(a=in, b=sel0inv, c=sel1inv, d=sel[2], out=e);	//100
+
+    //And(a=in, b=sel[0], out=f1);
+    //And(a=f1, b=sel1inv, out=f2);
+    //And(a=f2, b=sel[2], out=f); 
+    And4Way(a=in, b=sel[0], c=sel1inv, d=sel[2], out=f);	//101
+
+    //And(a=in, b=sel0inv, out=g1);
+    //And(a=g1, b=sel[1], out=g2);
+    //And(a=g2, b=sel[2], out=g); 
+    And4Way(a=in, b=sel0inv, c=sel[1], d=sel[2], out=g);	//110
+
+    //And(a=in, b=sel[0], out=h1);
+    //And(a=h1, b=sel[1], out=h2);
+	//And(a=h2, b=sel[2], out=h); 
+    And4Way(a=in, b=sel[0], c=sel[1], d=sel[2], out=h);		//111
+
+}
